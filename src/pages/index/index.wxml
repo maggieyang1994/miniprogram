@@ -1,1 +1,4 @@
-<view class="intro">欢迎使用代码片段，可在控制台查看代码片段的说明和文档</view>
+<view class="intro">
+  <button bindtap='goTo' data-url="/pages/photo/photo">take photo</button>
+  <button bindtap='goTo' data-url="/pages/audio/audio">take audio</button>
+</view>

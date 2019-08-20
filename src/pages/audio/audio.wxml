@@ -1,0 +1,7 @@
+<view class="audioWrapper">
+   <view class="voiceButton" bindtouchstart="touchstart" bindlongpress="longpress" bindtouchend="touchend" style="backgroundColor: {{isPress ? 'skyblue' : 'white'}}">
+     <image src="../../assets/voice.png" alt="" class="voiceImg"/>
+     <view>{{isPress? "松开" ： "按住说话"}}</view>
+   </view>
+   <view class="translateContainer"></view>
+</view>

@@ -1,0 +1,14 @@
+.voiceButton{
+  width: 33%;
+  border-radius: 42%;
+  border: 1px solid red;
+  padding: 19rpx;
+  display: flex;
+  justify-content: space-around
+
+
+}
+.voiceImg{
+  width:40rpx;
+  height:40rpx
+}
