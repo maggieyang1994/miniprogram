@@ -19,7 +19,7 @@ Component({
     imageLoaded: false,
     direction: '',
     startPosition: null,
-    movablePosotion: {}
+    temp: [0,0,0,0]
   },
 
   /**
@@ -39,8 +39,8 @@ Component({
       this.setData({
         imageLoaded: true,
         outview: tempObj,
-        movablePosotion: tempObj,
-        scale
+        scale,
+        movablePosotion: tempObj
       })
     },
     getElement(selector) {
@@ -58,11 +58,10 @@ Component({
       })
     },
     dragStart(e) {
-      console.log(e);
       this.setData({
         startPosition: {
-          x: e.touches[0].pageX,
-          y: e.touches[0].pageY
+          startX: e.touches[0].pageX,
+          startY: e.touches[0].pageY
         },
         direction: e.target.dataset.type
       })
@@ -70,37 +69,57 @@ Component({
     dragMove(e) {
       let direction = this.data.direction;
       let { pageX, pageY } = e.touches[0];
-      let temp = {};
+      let { startX, startY } = this.data.startPosition;
+      let temp = {}
       // 必须在区域内移动
       if (this.data.startPosition && pageX >= this.data.outview.left && pageX <= this.data.outview.left + this.data.outview.width && pageY >= this.data.outview.top && pageY <= this.data.outview.height + this.data.outview.top) {
         if (direction.indexOf("top") !== -1) {
-          temp.top = pageY - this.data.startPosition.y;
-          temp.height = this.data.outview.height - (pageY - this.data.startPosition.y)
+          // 向下- 向上 +
+          temp[0] = startY - pageY
         }
         if (direction.indexOf("left") !== -1) {
-          temp.left = pageX - this.data.startPosition.x;
-          temp.width = this.data.outview.width - (pageX - this.data.startPosition.x)
+          // 向右-  向左 +
+          temp[1] = startX - pageX
         }
         if (direction.indexOf("bottom") !== -1) {
-          temp.height = this.data.outview.height - (this.data.startPosition.y - pageY)
+          // 向下- 向上 +
+          temp[2] = startY - pageY
         }
         if (direction.indexOf("right") !== -1) {
-          temp.width = this.data.outview.width - (this.data.startPosition.x - pageX)
+          // 向右-  向左 +
+          temp[3] = startX - pageX
         }
         this.setData({
-          movablePosotion: {
-            ...this.data.movablePosotion,
-            ...temp
-          }
+          temp
         })
       }
 
 
     },
     dragEnd(e) {
+      // 放开的时候记录当前位置
+      let { left, top, height, width } = this.data.movablePosotion;
+      let temp = this.data.temp
       this.setData({
-        startPosition: null
+        movablePosotion: {
+          left: left - temp[1],
+          top: top - temp[0],
+          width: width + temp[1] - temp[3],
+          height: height + temp[0] - temp[2]
+        },
+        temp: [0,0,0,0]
       })
+    },
+    onChange(e){
+      if (!e.detail.source) return
+        const { x, y } = detail
+        this.setData({
+          movablePosotion: {
+            ...this.data.movablePosotion,
+            left: x,
+            top: y
+          }
+        })
     },
     handleCut() {
       let ctx = wx.createCanvasContext('canvas1', this);

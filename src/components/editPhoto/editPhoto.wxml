@@ -6,7 +6,7 @@
   <view class="imageWrapper">
     <movable-area style="width: {{outview. width}}px; height: {{outview.height}}px">
       <image src="{{sourceImg}}" class="fullWidth fullHeight" bindload="imageOnload"></image>
-      <movable-view class="movable fullWidth fullHeight" animation ='{{false}}' direction="all" wx:if="{{imageLoaded}}" x="{{movablePosotion.left}}" y="{{movablePosotion.top}}"  style=" height:{{movablePosotion.height}}px;width:{{movablePosotion.width}}px">
+      <movable-view class="movable fullWidth fullHeight" animation ='{{false}}' direction="all" wx:if="{{imageLoaded}}" x="{{movablePosotion.left - temp[1]}}" y="{{movablePosotion.top - temp[0]}}"  style=" height:{{movablePosotion.height + temp[0] - temp[2]}}px;width:{{movablePosotion.width + temp[1] - temp[3]}}px" bindchange="onChange">
         <!-- style="top:{{movablePosotion.top}}rpx; left: {{movablePosotion.left}}rpx; height:{{movablePosotion.height}}rpx;width:{{movablePosotion.width}}rpx" -->
         <view class="point-line pl-left top br-top " data-type="top" catchtouchstart="dragStart" catchtouchmove="dragMove" catchtouchend="dragEnd" />
         <view class="point-line pl-top right br-right" data-type="right" catchtouchstart="dragStart" catchtouchmove="dragMove" catchtouchend="dragEnd" />
