@@ -19,7 +19,8 @@ Component({
     imageLoaded: false,
     direction: '',
     startPosition: null,
-    temp: [0,0,0,0]
+    temp: [0, 0, 0, 0],
+    movablePosotion: null
   },
 
   /**
@@ -66,13 +67,14 @@ Component({
         direction: e.target.dataset.type
       })
     },
-    dragMove(e) {
+    async dragMove(e) {
       let direction = this.data.direction;
-      let { pageX, pageY } = e.touches[0];
+      let { pageX, pageY, clientX, clientY } = e.touches[0];
       let { startX, startY } = this.data.startPosition;
-      let temp = {}
+      let temp = this.data.temp;
+      let { left, width, height, top } = await this.getElement(".movableArea");
       // 必须在区域内移动
-      if (this.data.startPosition && pageX >= this.data.outview.left && pageX <= this.data.outview.left + this.data.outview.width && pageY >= this.data.outview.top && pageY <= this.data.outview.height + this.data.outview.top) {
+      if (this.data.startPosition && clientX >= left && clientX <= left + width && clientY >= top && clientY <= height + top) {
         if (direction.indexOf("top") !== -1) {
           // 向下- 向上 +
           temp[0] = startY - pageY
@@ -107,45 +109,40 @@ Component({
           width: width + temp[1] - temp[3],
           height: height + temp[0] - temp[2]
         },
-        temp: [0,0,0,0]
+        temp: [0, 0, 0, 0]
       })
     },
-    onChange(e){
+    onChange(e) {
+      // 如果是拖拽 e.detail.source = touches
       if (!e.detail.source) return
-        const { x, y } = detail
-        this.setData({
-          movablePosotion: {
-            ...this.data.movablePosotion,
-            left: x,
-            top: y
-          }
-        })
+      const { x, y } = e.detail
+      this.setData({
+        movablePosotion: {
+          ...this.data.movablePosotion,
+          left: x,
+          top: y
+        }
+      })
     },
     handleCut() {
+      let self = this;
       let ctx = wx.createCanvasContext('canvas1', this);
+      // 等比例放大图片
       // 不能画网络图片
       wx.getImageInfo({
         src: this.data.sourceImg,
         success: (res) => {
-          ctx.drawImage(res.path, this.data.movablePosotion.left, this.data.movablePosotion.top, this.data.movablePosotion.width, this.data.movablePosotion.height, 0, 0, this.data.movablePosotion.width, this.data.movablePosotion.height)
-
+          ctx.drawImage(res.path, this.data.movablePosotion.left / this.data.scale, this.data.movablePosotion.top / this.data.scale, this.data.movablePosotion.width / this.data.scale, this.data.movablePosotion.height / this.data.scale, 0, 0, this.data.movablePosotion.width / this.data.scale, this.data.movablePosotion.height / this.data.scale)
           ctx.draw(false, () => {
-            debugger
-            console.log("drawCanvas done")
-            wx.canvasToTempFilePath({
-              x: this.data.movablePosotion.left,
-              y: this.data.movablePosotion.top,
-              width: this.data.movablePosotion.width,
-              height: this.data.movablePosotion.height,
-              destWidth: this.data.movablePosotion.width,
-              destHeight: this.data.movablePosotion.height,
+           wx.canvasToTempFilePath({
+              quality: 1,
               canvasId: 'canvas1',
               success(res) {
                 // console.log(res.tempFilePath);
                 wx.saveImageToPhotosAlbum({
                   filePath: res.tempFilePath,
-                  success: (res) => {
-                    console.log(res, '保存成功')
+                  success: () => {
+                    self.triggerEvent("editPhoto", {path: res.tempFilePath})
                   },
                   fail: (err) => {
                     console.log(err)

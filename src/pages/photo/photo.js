@@ -2,7 +2,8 @@ const app = getApp()
 
 Page({
   data: {
-    sourceImg: null
+    sourceImg: null,
+    resultImg: null
   },
   onLoad: function () {
   },
@@ -10,5 +11,11 @@ Page({
     this.setData({
       sourceImg: e.detail.path
     })
+  },
+  handerEditPhoto(e){
+    this.setData({
+      resultImg: e.detail.path
+    })
   }
+
 })

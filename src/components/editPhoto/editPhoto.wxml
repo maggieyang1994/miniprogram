@@ -4,8 +4,13 @@
     <button bindtap="handleCut">cutting</button>
   </view>
   <view class="imageWrapper">
-    <movable-area style="width: {{outview. width}}px; height: {{outview.height}}px">
+    <movable-area style="width: {{outview. width}}px; height: {{outview.height}}px" class="movableArea">
       <image src="{{sourceImg}}" class="fullWidth fullHeight" bindload="imageOnload"></image>
+     
+      <!-- <view>x: {{movablePosotion.left - temp[1]}}</view>
+      <view>y: {{movablePosotion.top - temp[0]}}</view>
+      <view>width:{{movablePosotion.width + temp[1] - temp[3]}}</view>
+      <view>height:{{movablePosotion.height + temp[0] - temp[2]}}</view> -->
       <movable-view class="movable fullWidth fullHeight" animation ='{{false}}' direction="all" wx:if="{{imageLoaded}}" x="{{movablePosotion.left - temp[1]}}" y="{{movablePosotion.top - temp[0]}}"  style=" height:{{movablePosotion.height + temp[0] - temp[2]}}px;width:{{movablePosotion.width + temp[1] - temp[3]}}px" bindchange="onChange">
         <!-- style="top:{{movablePosotion.top}}rpx; left: {{movablePosotion.left}}rpx; height:{{movablePosotion.height}}rpx;width:{{movablePosotion.width}}rpx" -->
         <view class="point-line pl-left top br-top " data-type="top" catchtouchstart="dragStart" catchtouchmove="dragMove" catchtouchend="dragEnd" />
@@ -17,7 +22,9 @@
         <view class="point-line br-bottom br-left bottom left" data-type="bottom,left" catchtouchstart="dragStart" catchtouchmove="dragMove" catchtouchend="dragEnd" />
         <view class="point-line br-bottom br-right bottom right" data-type="bottom,right" catchtouchstart="dragStart" catchtouchmove="dragMove" catchtouchend="dragEnd" />
       </movable-view>
-      <canvas id="canvas1"  style="width: {{movablePosotion.width}}px; height: {{movablePosotion.height}}px;border:1px solid red" wx:if="{{imageLoaded}}"></canvas>
+      <!--  看文档不仔细 -->
+      <!-- <canvas id="canvas1"  style="width: {{movablePosotion.width}}px; height: {{movablePosotion.height}}px;border:1px solid red" wx:if="{{imageLoaded}}"></canvas> -->
+      <canvas canvas-id="canvas1"  style="width: {{movablePosotion.width}}px; height: {{movablePosotion.height}}px;border:1px solid red" wx:if="{{imageLoaded}}"></canvas>
     </movable-area>
   </view>
 </view>
