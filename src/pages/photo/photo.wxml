@@ -1,5 +1,6 @@
 <view class="cameraWrapper">
   <take-photo bindtakePhoto = "handlerTakePhoto" wx:if="{{!sourceImg && !resultImg}}"></take-photo>
   <edit-photo sourceImg="{{sourceImg}}" wx:if="{{sourceImg && !resultImg}}" bindeditPhoto="handerEditPhoto"> </edit-photo>
-  <image src="{{resultImg}}"/>
+  <image src="{{resultImg}}"  style="width: {{resultImgSize.width}}px; height: {{resultImgSize.height}}px"/>
+  <imageTranlator wx:if="{{resultImg}}" image = "{{resultImg}}"/>
 </view>

@@ -132,7 +132,7 @@ Component({
       wx.getImageInfo({
         src: this.data.sourceImg,
         success: (res) => {
-          ctx.drawImage(res.path, this.data.movablePosotion.left / this.data.scale, this.data.movablePosotion.top / this.data.scale, this.data.movablePosotion.width / this.data.scale, this.data.movablePosotion.height / this.data.scale, 0, 0, this.data.movablePosotion.width / this.data.scale, this.data.movablePosotion.height / this.data.scale)
+          ctx.drawImage(res.path, (this.data.movablePosotion.left - this.data.outview.left) / this.data.scale, (this.data.movablePosotion.top - this.data.outview.top) / this.data.scale, this.data.movablePosotion.width / this.data.scale, this.data.movablePosotion.height / this.data.scale, 0, 0, this.data.movablePosotion.width / this.data.scale, this.data.movablePosotion.height / this.data.scale)
           ctx.draw(false, () => {
            wx.canvasToTempFilePath({
               quality: 1,
@@ -141,8 +141,9 @@ Component({
                 // console.log(res.tempFilePath);
                 wx.saveImageToPhotosAlbum({
                   filePath: res.tempFilePath,
-                  success: () => {
-                    self.triggerEvent("editPhoto", {path: res.tempFilePath})
+                  success: result => {
+                    console.log(result)
+                    self.triggerEvent("editPhoto", {path: res.tempFilePath, width: self.data.movablePosotion.width, height: self.data.movablePosotion.height})
                   },
                   fail: (err) => {
                     console.log(err)

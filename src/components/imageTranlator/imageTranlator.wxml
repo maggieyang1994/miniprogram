@@ -1,0 +1,4 @@
+<!--components/imageTranlator.wxml-->
+<view>
+  <button bindtap="image2Text" ws:if="{{image}}">识别图中文字</button>
+</view>

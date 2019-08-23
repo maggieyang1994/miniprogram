@@ -24,7 +24,7 @@
       </movable-view>
       <!--  看文档不仔细 -->
       <!-- <canvas id="canvas1"  style="width: {{movablePosotion.width}}px; height: {{movablePosotion.height}}px;border:1px solid red" wx:if="{{imageLoaded}}"></canvas> -->
-      <canvas canvas-id="canvas1"  style="width: {{movablePosotion.width}}px; height: {{movablePosotion.height}}px;border:1px solid red" wx:if="{{imageLoaded}}"></canvas>
+      <canvas canvas-id="canvas1"  style="width: {{movablePosotion.width/scale}}px; height: {{movablePosotion.height/scale}}px;border:1px solid red" wx:if="{{imageLoaded}}"></canvas>
     </movable-area>
   </view>
 </view>
